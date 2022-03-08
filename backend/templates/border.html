@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Test</title>
+    <link
+      href="{{ url_for('static', filename='styles/css/bootstrap.min.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='styles/css/main.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='styles/css/border.css') }}"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script
+      src="https://kit.fontawesome.com/6c9203e520.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="main-container">
+      <div class="sidebar d-flex flex-column">
+        <h1>Sudoku Solver</h1>
+        <div class="underline"></div>
+        <div class="navigation-items">
+          <div class="nav-item d-flex flex-row">
+            <i class="fa-solid fa-house"></i>
+            <p class="nav-item-text">Home</p>
+          </div>
+          <div class="nav-item d-flex flex-row">
+            <i class="fa-regular fa-chess-bishop"></i>
+            <p class="nav-item-text">Upload sudoku</p>
+          </div>
+          <div class="nav-item d-flex flex-row">
+            <i class="fa-regular fa-chart-bar"></i>
+            <p class="nav-item-text">Statistics</p>
+          </div>
+          <div class="nav-item d-flex flex-row">
+            <i class="fa-regular fa-address-card"></i>
+            <p class="nav-item-text">About</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="layout">
+        <h1>Reshape the edges so it fits the borders of the sudoku</h1>
+        <div id="container"></div>
+
+
+        <script src="https://unpkg.com/konva@8/konva.min.js"></script>
+        <script>
+            var imgLink = "/uploads/sudoku.jpg";
+            console.log(5);
+            console.log(imgLink);
+        </script>
+        <script src="{{ url_for('static', filename='script/borderSelection.js') }}"></script>
+      </div>
+    </div>
+  </body>
+</html>

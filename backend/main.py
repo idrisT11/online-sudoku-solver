@@ -27,5 +27,25 @@ def upload():
             return render_template("error.html")
 
 
+
+@app.route("/border", methods=['POST', 'GET'])
+def border():
+    if request.method == "GET":
+        print('llllllllllllllllllll')
+        return render_template("border.html")
+
+    elif request.method == "POST":
+        try:
+
+            f = request.files['file']
+            image_location = UPLOAD_FOLDER + f.filename
+            f.save(image_location)
+            return render_template("border.html")
+
+        except Exception as e:
+            print(e)
+            return render_template("error.html")
+
+
 if __name__ == "__main__":
     app.run()
