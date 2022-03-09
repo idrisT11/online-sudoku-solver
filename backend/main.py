@@ -1,4 +1,5 @@
-from flask import Flask, request, render_template
+import re
+from flask import Flask, request, render_template, send_file
 app = Flask(__name__)
 
 UPLOAD_FOLDER = "./uploads/"
@@ -25,6 +26,30 @@ def upload():
         except Exception as e:
             print(e)
             return render_template("error.html")
+
+@app.route("/get_image", methods=['GET'])
+def get_image():
+
+    if request.args.get('token') is not None:
+        regex = re.compile('^[0-9A-F]{32}$')
+        token = request.args.get('token')
+
+        if regex.fullmatch(token):
+            try:       
+                filename = './uploads/' + token + '.jpg'
+                return send_file(filename, mimetype='image/gif')
+
+            except Exception as e:
+                print(e)
+                return render_template("error.html")
+        
+        else:
+            print('Wrong Token')
+            return render_template("error.html")
+       
+    else:
+       return render_template("error.html")
+    
 
 
 
