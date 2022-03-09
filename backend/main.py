@@ -1,5 +1,8 @@
+from flask import Flask, request, render_template, send_file, redirect
 import re
-from flask import Flask, request, render_template, send_file
+from utils.utils import generateToken, matToStr
+from utils.get_border import get_border
+
 app = Flask(__name__)
 
 UPLOAD_FOLDER = "./uploads/"
@@ -16,16 +19,23 @@ def upload():
         return render_template("upload.html")
 
     elif request.method == "POST":
+        
         try:
+            token = generateToken()
 
             f = request.files['file']
-            image_location = UPLOAD_FOLDER + f.filename
+            image_location = UPLOAD_FOLDER + token + '.' + f.filename.split('.')[-1]
             f.save(image_location)
-            return render_template("success.html")
+            
+            contour = matToStr(get_border(image_location))
+            print(contour)
+
+            return redirect("http://localhost:5000/border?contour="+contour, code=302)
 
         except Exception as e:
             print(e)
             return render_template("error.html")
+
 
 @app.route("/get_image", methods=['GET'])
 def get_image():
@@ -56,7 +66,7 @@ def get_image():
 @app.route("/border", methods=['POST', 'GET'])
 def border():
     if request.method == "GET":
-        print('llllllllllllllllllll')
+
         return render_template("border.html")
 
     elif request.method == "POST":
@@ -74,3 +84,4 @@ def border():
 
 if __name__ == "__main__":
     app.run()
+
