@@ -18,10 +18,10 @@ def matToStr(mat):
     for row in mat:
         for elem in row:
             s += str(elem)
-            s += '+'
-        s = s[0:-2]
-        s += '#'
-    s = s[0:-2]
+            s += '-'
+        s = s[0:-1]
+        s += '|'
+    s = s[0:-1]
 
     return s
         

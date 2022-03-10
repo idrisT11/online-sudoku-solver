@@ -1,9 +1,27 @@
-var  contour = [
-    [60, 60],
-    [50, 400],
-    [550, 450],
-    [500, 60],
-];
+
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+
+var contourStr = urlParams.get('contour');
+var imgStr = urlParams.get('token');
+
+
+var imgLink = 'get_image/'+imgStr;
+
+var contour = contourStr.split('|');
+contour = contour.map((row)=>{
+    let new_row = row.split('-');
+    new_row = new_row.map(e =>
+        parseInt(e, 10)
+    );
+
+    return new_row;
+})
+
+var scaleX = 1;  //The scale will be set as soon as the image is loaded
+var scaleY = 1;  //The scale will be set as soon as the image is loaded
+
+var scaledContour = [];
 
 
 
@@ -34,27 +52,39 @@ function chargeBorderSelector(imgLink) {
     var imageObj = new Image();
     imageObj.onload = function () {
 
-    var yoda = new Konva.Image({
-        x: 0,
-        y: 0,
-        image: imageObj,
+        var yoda = new Konva.Image({
+            x: 0,
+            y: 0,
+            image: imageObj,
 
-    });
-    let scale = 600/yoda.width();
-    stage.height( yoda.height()*scale );
+        });
+        scaleX = 600/yoda.width();
+        scaleY = 600/yoda.height();
 
-    yoda.scaleX(scale);
-    yoda.scaleY(scale);
+        yoda.width(600);
+        yoda.height(600);
 
+        scaledContour = contour.map((row)=>{
+            row[0] *= scaleX;
+            row[1] *= scaleY;
+            return row;
+        });
+         
         layerImage.add(yoda);
+
+        showShapes();
     };
     imageObj.src = imgLink;
+}
+
+function showShapes(){
 
     /////////////////////////////////////////////////////////////////////////
     for (let i = 0; i < 4; i++) {
+
         let circle = new Konva.Circle({
-            x: contour[i][0],
-            y: contour[i][1],
+            x: scaledContour[i][0],
+            y: scaledContour[i][1],
             radius: 7,
             fill: '#00ff00',
             stroke: 'black',
@@ -76,7 +106,7 @@ function chargeBorderSelector(imgLink) {
         let b = (i+1)%4;
 
         let line = new Konva.Line({
-            points: [contour[a][0], contour[a][1], contour[b][0], contour[b][1]],
+            points: [scaledContour[a][0], scaledContour[a][1], scaledContour[b][0], scaledContour[b][1]],
             stroke: 'green',
             strokeWidth: 3,
             lineCap: 'round',
@@ -103,8 +133,11 @@ function chargeBorderSelector(imgLink) {
             edges[i].points(p_1);
             edges[a].points(p_2);
 
-            contour[i][0] = vertex.x();
-            contour[i][1] = vertex.y();
+            scaledContour[i][0] = vertex.x();
+            scaledContour[i][1] = vertex.y();
+
+            contour[i][0] = scaledContour[i][0]/scaleX;
+            contour[i][1] = scaledContour[i][1]/scaleY;
         });
         
     }

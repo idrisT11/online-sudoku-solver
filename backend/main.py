@@ -28,21 +28,20 @@ def upload():
             f.save(image_location)
             
             contour = matToStr(get_border(image_location))
-            print(contour)
+            param = "contour="+contour+"&token="+token
 
-            return redirect("http://localhost:5000/border?contour="+contour, code=302)
+            return redirect("http://localhost:5000/border?"+param, code=302)
 
         except Exception as e:
             print(e)
             return render_template("error.html")
 
 
-@app.route("/get_image", methods=['GET'])
-def get_image():
+@app.route("/get_image/<token>", methods=['GET'])
+def get_image(token):
 
-    if request.args.get('token') is not None:
+    if token is not None:
         regex = re.compile('^[0-9A-F]{32}$')
-        token = request.args.get('token')
 
         if regex.fullmatch(token):
             try:       

@@ -1,7 +1,7 @@
 .layout {
 
     margin-left: 5%; 
-    margin-top: 6%;
+    margin-top: 5%;
 }
 
 button {
@@ -21,6 +21,6 @@ button {
 h1 {
 
     color:#1e3799 !important;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     font-size: 28px !important;
 }
