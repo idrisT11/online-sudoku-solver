@@ -1,0 +1,23 @@
+.case9{
+    border-collapse: collapse;
+
+}
+
+.case_unique{
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    border: 1px solid black;
+    border-collapse: collapse;
+
+}
+
+.case_9_1{
+    border: 3px solid black;
+    border-collapse: collapse;
+}
+
+.all_sudoku{
+    border: 1px solid black;
+    border-collapse: collapse;
+}

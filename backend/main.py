@@ -1,7 +1,8 @@
 from flask import Flask, request, render_template, send_file, redirect
 import re
-from utils.utils import generateToken, matToStr
+from utils.utils import generateToken, matToStr, strToMat, getNewVal
 from utils.get_border import get_border
+from utils.get_result import get_result
 
 app = Flask(__name__)
 
@@ -80,6 +81,40 @@ def border():
             print(e)
             return render_template("error.html")
 
+
+
+@app.route("/result", methods=['GET'])
+def result():
+
+    contourStr = request.args.get('contour')
+    token = request.args.get('token')
+
+    sudokuVal = request.args.get('values')
+
+    if contourStr is not None and len(contourStr) < 100 :
+        
+        try:
+            contour = strToMat(contourStr)
+            image_location = UPLOAD_FOLDER + token + '.' + 'jpg'
+
+            result, new_val = get_result(image_location, contour)
+            resultStr = ''.join([str(int(e)) for row in result for e in row])
+            new_valStr = getNewVal(new_val)
+
+            param = 'values=' + resultStr + '&new_val='+new_valStr
+
+            return redirect("http://localhost:5000/result?"+param, code=302)
+
+
+        except Exception as e:
+            print(e)
+            return render_template("error.html")  
+
+    elif sudokuVal is not None and len(sudokuVal) < 100:
+        return render_template("result.html")
+
+    else:
+        return render_template("error.html")
 
 if __name__ == "__main__":
     app.run()

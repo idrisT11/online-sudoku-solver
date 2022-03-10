@@ -23,6 +23,10 @@ var scaleY = 1;  //The scale will be set as soon as the image is loaded
 
 var scaledContour = [];
 
+/////////////////////////////////////////////////////////////////////////
+var submitLink = document.getElementById('submit');
+submitLink.href = generateResultUrl(imgStr, contour);
+
 
 
 /////////////////////////////////////////////////////////////////////////
@@ -58,11 +62,11 @@ function chargeBorderSelector(imgLink) {
             image: imageObj,
 
         });
-        scaleX = 600/yoda.width();
-        scaleY = 600/yoda.height();
+        scaleX = 500/yoda.width();
+        scaleY = 500/yoda.height();
 
-        yoda.width(600);
-        yoda.height(600);
+        yoda.width(500);
+        yoda.height(500);
 
         scaledContour = contour.map((row)=>{
             row[0] *= scaleX;
@@ -138,6 +142,8 @@ function showShapes(){
 
             contour[i][0] = scaledContour[i][0]/scaleX;
             contour[i][1] = scaledContour[i][1]/scaleY;
+
+            submitLink.href = generateResultUrl(imgStr, contour);
         });
         
     }
@@ -148,6 +154,24 @@ function showShapes(){
     layerVertx.draw();
     layerLines.draw();
     layerImage.draw();
+}
+
+function generateResultUrl(token, contour) {
+    let url = '/result?token=' + token + '&contour=';
+    let contourStr = '';
+    for (const row of contour) {
+        for (const elem of row) {
+            contourStr += elem;
+            contourStr += '-';
+        }
+        contourStr = contourStr.substring(0, contourStr.length-1);
+        contourStr += '|';
+
+    }
+    contourStr = contourStr.substring(0, contourStr.length-1);
+    console.log(contourStr);
+    url += contourStr;
+    return url;
 }
 
 

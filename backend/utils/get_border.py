@@ -1,11 +1,7 @@
-
 import cv2
-
 import torchvision.transforms as transforms
-
 import imutils
 from skimage.segmentation import clear_border
-
 
 
 toTensor = transforms.ToTensor()
