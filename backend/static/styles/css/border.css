@@ -18,9 +18,25 @@ button {
     border-radius: 5px;
 }
 
+#ctn{
+    display: flex;
+}
+
 h1 {
 
     color:#1e3799 !important;
     margin-bottom: 15px;
     font-size: 28px !important;
+}
+
+#submitLink{
+    background-color: #1e3799;
+    padding: 0;
+    margin: 0;
+    display: block;
+}
+
+#submitLink img{
+    margin: 0;
+    padding: 0;
 }

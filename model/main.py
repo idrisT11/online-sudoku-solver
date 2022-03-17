@@ -1,4 +1,5 @@
-from ast import If
+from json import load
+import pickle
 import cv2
 from utils import four_point_transform
 from utils import order_point
@@ -13,11 +14,15 @@ import matplotlib.pyplot as plt
 
 from skimage.segmentation import clear_border
 
+import loader
+
 
 toTensor = transforms.ToTensor()
 
 NetworkModel = model.NumberNetwork()
-NetworkModel.load_state_dict(tc.load('./model.nt')) 
+NetworkModel.load_state_dict(tc.load('./modelFinal.nt')) 
+image_path = "./images/sudoku.jpg"
+
 
 
 def getPrediction(cell):
@@ -26,12 +31,14 @@ def getPrediction(cell):
     print(input_tensor.shape)
     prediction = NetworkModel(input_tensor)
     value = prediction.argmax(dim=1)
+    value += 1
+
     return value
 
-imgOri = cv2.imread("sudokuEcran2.jpg")
+imgOri = cv2.imread(image_path)
 
 
-img = cv2.imread("sudokuEcran2.jpg", cv2.IMREAD_GRAYSCALE)
+img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
 img = cv2.GaussianBlur(img, (7, 7), 3)
 img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
 img = cv2.bitwise_not(img)
@@ -65,6 +72,12 @@ for c in cnts:
 puzzleCnt = puzzleCnt.reshape(4, 2)
 #print(puzzleCnt)#numpy array
 order_point(puzzleCnt)
+
+imgOri = cv2.imread(image_path)
+
+
+img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+
 warped = four_point_transform(img, puzzleCnt.reshape(4, 2))
 warpedOri = four_point_transform(imgOri, puzzleCnt.reshape(4, 2))
 
@@ -99,8 +112,14 @@ for i, cell in enumerate(cells_img_array):
     cell = cv2.cvtColor(cell, cv2.COLOR_BGR2GRAY)
     cell = cv2.GaussianBlur(cell, (5, 5), 2)
 
-    thresh = cv2.threshold(cell, 0, 255, cv2.THRESH_OTSU | cv2.THRESH_BINARY_INV)[1]
+    thresh = cv2.adaptiveThreshold(cell, 255,  cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 31, 2)
+    _, thresh1 = cv2.threshold(cell, 0, 255,  cv2.THRESH_OTSU | cv2.THRESH_BINARY_INV)
     thresh = clear_border(thresh)
+    #print(thresh)
+    #plt.imshow(thresh)
+    #plt.show()
+    #plt.imshow(thresh1)
+    #plt.show()
 
     cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
     cnts = imutils.grab_contours(cnts)
@@ -120,15 +139,18 @@ for i, cell in enumerate(cells_img_array):
     if percentFilled < 0.05:
         continue
 
+
     #Sinon on applique le masque sur la case pour enlever toute fluctuations possibles
     cell_with_digit = cv2.bitwise_and(thresh, mask)
     cell_to_analyse = cv2.resize(cell_with_digit, (28, 28))
+    #cell_to_analyse = cv2.threshold(cell_to_analyse, 127, 255, cv2.THRESH_BINARY)[1]
+
 
     ##########
     digit_value = getPrediction(cell_to_analyse)
     print(digit_value)
     cell_val[i//9][i%9] = digit_value
     plt.imshow(cell_to_analyse)
-plt.show()    
+    plt.show()   
 
 print(cell_val)     

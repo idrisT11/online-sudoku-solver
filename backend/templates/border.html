@@ -54,14 +54,14 @@
 
       <div class="layout">
         <h1>Reshape the edges so it fits the borders of the sudoku</h1>
-        <div id="container"></div>
-        <a href="#" id="submit" style="color: red; display: block;background-color: blue;">
-          Compute
-        </a>
+        <div id="ctn">
+          <div id="container"></div>
         
+          <a href="#" id="submit" id="submitLink">
+            <img src="{{ url_for('static', filename='images/arrow.svg') }}" width="40px" height="40px">
+          </a>
+        </div>
         
-
-
         <script src="https://unpkg.com/konva@8/konva.min.js"></script>
         <script src="{{ url_for('static', filename='script/borderSelection.js') }}"></script>
       </div>

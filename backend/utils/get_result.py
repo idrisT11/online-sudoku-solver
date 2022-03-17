@@ -23,6 +23,9 @@ def getPrediction(cell):
 
     prediction = NetworkModel(input_tensor)
     value = prediction.argmax(dim=1)
+
+    value += 1
+    
     return value
 
 def get_result(imgPath, border):
@@ -90,7 +93,7 @@ def get_result(imgPath, border):
         cell_to_analyse = cv2.resize(cell_with_digit, (28, 28))
 
         ##########
-        digit_value = getPrediction(cell_to_analyse)
+        digit_value = getPrediction(cell_to_analyse) 
 
         cell_val[i//9][i%9] = digit_value
 

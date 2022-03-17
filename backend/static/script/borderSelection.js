@@ -161,7 +161,7 @@ function generateResultUrl(token, contour) {
     let contourStr = '';
     for (const row of contour) {
         for (const elem of row) {
-            contourStr += elem;
+            contourStr += Math.floor(elem);
             contourStr += '-';
         }
         contourStr = contourStr.substring(0, contourStr.length-1);
