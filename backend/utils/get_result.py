@@ -85,7 +85,7 @@ def get_result(imgPath, border):
         percentFilled = cv2.countNonZero(mask)/float(w*h)
 
         #Si le truc detecté represente moin de 5% de la case, c'est que c'est une fluctuation (un bruit)
-        if percentFilled < 0.05:
+        if percentFilled < 0.15:
             continue
 
         #Sinon on applique le masque sur la case pour enlever toute fluctuations possibles

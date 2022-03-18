@@ -1,5 +1,3 @@
-from json import load
-import pickle
 import cv2
 from utils import four_point_transform
 from utils import order_point
@@ -21,7 +19,7 @@ toTensor = transforms.ToTensor()
 
 NetworkModel = model.NumberNetwork()
 NetworkModel.load_state_dict(tc.load('./modelFinal.nt')) 
-image_path = "./images/sudoku.jpg"
+image_path = "./images/sudokuEcran2.jpg"
 
 
 
@@ -42,6 +40,9 @@ img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
 img = cv2.GaussianBlur(img, (7, 7), 3)
 img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
 img = cv2.bitwise_not(img)
+
+plt.imshow(img)
+plt.show()
 
 
 cnts = cv2.findContours(img.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -136,7 +137,7 @@ for i, cell in enumerate(cells_img_array):
     percentFilled = cv2.countNonZero(mask)/float(w*h)
 
     #Si le truc detecté represente moin de 5% de la case, c'est que c'est une fluctuation (un bruit)
-    if percentFilled < 0.05:
+    if percentFilled < 0.15:
         continue
 
 
