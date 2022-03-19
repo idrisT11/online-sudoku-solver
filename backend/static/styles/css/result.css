@@ -1,3 +1,42 @@
+.layout {
+
+    margin-left: 5%; 
+
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+
+    width: 800px;
+
+}
+
+button {
+
+    color: #fff; 
+    background: #1e3799;
+    padding: 2px;
+    font-size: 16px;
+    width: 100px;
+    font-weight: 600;
+    height: 3.5vh;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+}
+
+#ctn{
+    display: flex;
+    height: 500px;
+}
+
+h1 {
+
+    color:#1e3799 !important;
+    margin-bottom: 15px;
+    font-size: 28px !important;
+}
+
 .case9{
     border-collapse: collapse;
 
