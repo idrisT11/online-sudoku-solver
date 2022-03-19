@@ -20,6 +20,7 @@ button {
 
 #ctn{
     display: flex;
+    height: 500px;
 }
 
 h1 {
@@ -30,11 +31,15 @@ h1 {
 }
 
 #submitLink{
-    background-color: #1e3799;
     display: block;
+    display: flex;
+    align-items: center;
+
 }
 
-#submitLink img{
+#submitLink a{
+    background-color: #1e3799;
     margin: 0;
     padding: 0;
+    padding: 13px;
 }
