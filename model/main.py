@@ -12,14 +12,13 @@ import matplotlib.pyplot as plt
 
 from skimage.segmentation import clear_border
 
-import loader
 
 
 toTensor = transforms.ToTensor()
 
 NetworkModel = model.NumberNetwork()
 NetworkModel.load_state_dict(tc.load('./modelFinal.nt')) 
-image_path = "./images/sudokuEcran2.jpg"
+image_path = './images/sudoku.jpg'
 
 
 
@@ -33,10 +32,11 @@ def getPrediction(cell):
 
     return value
 
+
 imgOri = cv2.imread(image_path)
 
-
 img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+
 img = cv2.GaussianBlur(img, (7, 7), 3)
 img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
 img = cv2.bitwise_not(img)
@@ -113,7 +113,7 @@ for i, cell in enumerate(cells_img_array):
     cell = cv2.cvtColor(cell, cv2.COLOR_BGR2GRAY)
     cell = cv2.GaussianBlur(cell, (5, 5), 2)
 
-    thresh = cv2.adaptiveThreshold(cell, 255,  cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 31, 2)
+    thresh = cv2.adaptiveThreshold(cell, 255,  cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 11, 2)
     _, thresh1 = cv2.threshold(cell, 0, 255,  cv2.THRESH_OTSU | cv2.THRESH_BINARY_INV)
     thresh = clear_border(thresh)
     #print(thresh)
@@ -137,7 +137,7 @@ for i, cell in enumerate(cells_img_array):
     percentFilled = cv2.countNonZero(mask)/float(w*h)
 
     #Si le truc detecté represente moin de 5% de la case, c'est que c'est une fluctuation (un bruit)
-    if percentFilled < 0.15:
+    if percentFilled < 0.05:
         continue
 
 
@@ -152,6 +152,6 @@ for i, cell in enumerate(cells_img_array):
     print(digit_value)
     cell_val[i//9][i%9] = digit_value
     plt.imshow(cell_to_analyse)
-    plt.show()   
+plt.show()   
 
 print(cell_val)     

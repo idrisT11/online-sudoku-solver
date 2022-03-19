@@ -1,4 +1,3 @@
-from asyncore import read
 import numpy as np
 import cv2
 

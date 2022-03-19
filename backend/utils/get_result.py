@@ -7,6 +7,7 @@ from skimage.segmentation import clear_border
 
 import utils.model as model
 from utils.model_utils import four_point_transform, order_point
+from utils.get_solution import get_solution
 
 import matplotlib.pyplot as plt
 
@@ -85,7 +86,7 @@ def get_result(imgPath, border):
         percentFilled = cv2.countNonZero(mask)/float(w*h)
 
         #Si le truc detecté represente moin de 5% de la case, c'est que c'est une fluctuation (un bruit)
-        if percentFilled < 0.15:
+        if percentFilled < 0.05:
             continue
 
         #Sinon on applique le masque sur la case pour enlever toute fluctuations possibles
@@ -97,6 +98,8 @@ def get_result(imgPath, border):
 
         cell_val[i//9][i%9] = digit_value
 
-    f = lambda x : x == 0
+    new_val = cell_val == 0
+    soluce, _ = get_solution(cell_val)
 
-    return cell_val.tolist(), f(cell_val).tolist()
+
+    return soluce.tolist(), new_val.astype(np.int).tolist()
